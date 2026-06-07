@@ -19,11 +19,11 @@ describe("App.tsx", () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
-  test('Renders page, with default select option as "ALL"', async () => {
+  test('Renders page, with default select option as "All"', async () => {
     render(<App />);
 
     const select = screen.getByTestId("category_select");
-    expect(select).toHaveTextContent("ALL");
+    expect(select).toHaveTextContent("All");
   });
 
   test("Currently selected category should change when user clicks a different option", async () => {
@@ -32,7 +32,7 @@ describe("App.tsx", () => {
     const select = screen.getByTestId("category_select");
     await userEvent.click(select);
     await userEvent.click(screen.getByTestId("BACKTRACKING"));
-    expect(select).toHaveTextContent("BACKTRACKING");
+    expect(select).toHaveTextContent("Backtracking");
   });
 
   test("chrome tab api should be called to open the github repo in new tab when user clicks source code link", async () => {

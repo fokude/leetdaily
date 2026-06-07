@@ -1,6 +1,26 @@
 import { useState, useRef, useEffect } from "react";
 import { Category } from "../../problems/__data__/Problems";
 
+const categoryDisplayNames: Record<keyof typeof Category, string> = {
+  ALL: "All",
+  ARRAYS: "Arrays",
+  STACKS: "Stacks",
+  BINARY_SEARCH: "Binary Search",
+  SLIDING_WINDOW: "Sliding Window",
+  TREES: "Trees",
+  TRIES: "Tries",
+  BACKTRACKING: "Backtracking",
+  HEAP_PRIORITYQ: "Heap & Priority Queue",
+  GRAPHS: "Graphs",
+  ONE_D_DP: "1D DP",
+  INTERVALS: "Intervals",
+  GREEDY: "Greedy",
+  ADVANCED_GRAPHS: "Advanced Graphs",
+  TWO_D_DP: "2D DP",
+  BIT_MANIPULATION: "Bit Manipulation",
+  MATH_GEOMETRY: "Math & Geometry",
+};
+
 interface ICategorySelect {
   onChange: (e: Category) => void;
 }
@@ -54,7 +74,7 @@ const CategorySelect = ({ onChange }: ICategorySelect) => {
           className="custom-dropdown-trigger"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <span>{selectedKey.replace(/_/g, " ")}</span>
+          <span>{categoryDisplayNames[selectedKey]}</span>
           <div className={`custom-dropdown-arrow ${isOpen ? "open" : ""}`}>
             <svg
               width="16"
@@ -74,7 +94,8 @@ const CategorySelect = ({ onChange }: ICategorySelect) => {
         {isOpen && (
           <div className="custom-dropdown-menu">
             {Object.keys(Category).map((key) => {
-              const formattedName = key.replace(/_/g, " ");
+              const formattedName =
+                categoryDisplayNames[key as keyof typeof Category];
               const isSelected = selectedKey === key;
               return (
                 <button
