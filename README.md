@@ -1,6 +1,32 @@
 # LeetDaily
 
-The Neetcode 150 is a popular road map for technical interview preparation questions to work through. After completing the roadmap, it may be helpful to reinforce the learning with repetition. This chrome extension randomly selects a question from a specified category (or all categories by default).
+LeetDaily is a Chrome and Firefox extension for interview preparation. It serves random problems from NeetCode 150, Blind 75, Grind 169 or your own lists, and brings the ones you struggled with back on a spaced-repetition schedule so the knowledge sticks.
+
+Random practice is good for exposure, but consolidating what you have already seen is what makes it stay. LeetDaily is built around that second part.
+
+## How it is meant to be used
+
+1. Pick a list from the badge under the title in the popup. For NeetCode 150 you can also pick a category.
+2. Click `Go`. A random problem opens in your current tab and the popup closes.
+3. Solve it, then reopen the popup. It asks how it went:
+   - `Nailed it` marks it solved.
+   - `Shaky` marks it solved but queues it for review.
+   - `Missed` queues it for review without marking it solved.
+4. Queued problems come back at 1, 3, 7, 14 and 30 days. Nailing a review moves it to the next step, missing one sends it back to the first. After the 30 day step it leaves the queue.
+5. The extension icon shows how many reviews are due, and `Review due` in the popup opens the most overdue one.
+6. Open the dashboard from the grid icon in the popup to see every problem in a list, what is solved, and the revisit queue with last attempt and due dates.
+
+Solved and revisit are separate on purpose. A problem can be solved and still worth reviewing, and `Skip` on the rating prompt records nothing.
+
+## Features
+
+- Built-in lists: NeetCode 150, Blind 75 and Grind 169, plus custom lists from pasted links.
+- Spaced-repetition revisit queue with a due-count badge on the icon.
+- A daily streak. A day counts when you rate at least one problem, and it resets after a missed day.
+- Dashboard with progress per list, filters, and reset buttons for a list or the queue.
+- LeetCode's daily challenge in one click, and an option to open problems on NeetCode instead.
+- Light and dark mode, light by default.
+- Progress syncs across devices through the browser account. Export and import for backups.
 
 ## How to Run
 
@@ -81,7 +107,7 @@ Titles with spaces (`Two Sum`) are skipped because they cannot be turned into a 
 
 | Data | Stored in | Syncs |
 | --- | --- | --- |
-| Progress, custom lists, active list | `chrome.storage.sync` | Across devices signed into the same Chrome or Firefox account |
+| Progress, custom lists, active list, streak | `chrome.storage.sync` | Across devices signed into the same Chrome or Firefox account |
 | Theme, NeetCode toggle, last opened problem | Local to the browser | No |
 
 Sync does not work between different browsers. Use Export and Import for that.
