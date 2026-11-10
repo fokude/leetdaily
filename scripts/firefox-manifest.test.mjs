@@ -1,9 +1,10 @@
 import { describe, expect, test } from "vitest";
+import chromeManifest from "../public/manifest.json";
 import { GECKO_ID, toFirefoxManifest } from "./firefox-manifest.mjs";
 
 const chrome = {
   manifest_version: 3,
-  name: "LeetDaily",
+  name: "Memoize",
   permissions: ["storage", "alarms"],
   background: { service_worker: "assets/background.js", type: "module" },
 };
@@ -25,8 +26,10 @@ describe("toFirefoxManifest", () => {
     });
   });
 
-  test("uses a name within Firefox's 45 character limit", () => {
-    expect(toFirefoxManifest(chrome).name.length).toBeLessThanOrEqual(45);
+  test("the real manifest name fits Firefox's 45 character limit", () => {
+    expect(toFirefoxManifest(chromeManifest).name.length).toBeLessThanOrEqual(
+      45,
+    );
   });
 
   test("keeps every other field and does not mutate the input", () => {

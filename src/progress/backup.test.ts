@@ -18,7 +18,7 @@ describe("backup", () => {
   });
 
   test("rejects files that are not backups", () => {
-    expect(() => parseBackup('{"hello":1}')).toThrow("Not a LeetDaily backup");
+    expect(() => parseBackup('{"hello":1}')).toThrow("Not a Memoize backup");
   });
 
   test("rejects malformed records", () => {

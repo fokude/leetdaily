@@ -1,8 +1,8 @@
-# LeetDaily
+# Memoize
 
-LeetDaily is a Chrome and Firefox extension for interview preparation. It serves random problems from NeetCode 150, Blind 75, Grind 169 or your own lists, and brings the ones you struggled with back on a spaced-repetition schedule so the knowledge sticks.
+Memoize is a Chrome and Firefox companion for DSA interview preparation. It serves random problems from NeetCode 150, Blind 75, Grind 169 or your own lists, and brings the ones you struggled with back on a spaced-repetition schedule so the knowledge sticks.
 
-Random practice is good for exposure, but consolidating what you have already seen is what makes it stay. LeetDaily is built around that second part.
+Random practice is good for exposure, but consolidating what you have already seen is what makes it stay. Memoize is built around that second part.
 
 ## How it is meant to be used
 

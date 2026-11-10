@@ -6,9 +6,6 @@
 // publish under your own add-on ID.
 export const GECKO_ID = "leetdaily@fokude.github.io";
 
-// Firefox rejects add-on names longer than 45 characters.
-const FIREFOX_NAME = "LeetDaily - LeetCode & DSA Interview Prep";
-
 /**
  * 140 is the first Firefox release that understands
  * data_collection_permissions, which new AMO submissions must declare.
@@ -22,7 +19,6 @@ export const toFirefoxManifest = (manifest) => {
 
   return {
     ...manifest,
-    name: FIREFOX_NAME,
     background: { scripts: [worker], ...background },
     browser_specific_settings: {
       gecko: {

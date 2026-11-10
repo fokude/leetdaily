@@ -1,7 +1,8 @@
 {
   "manifest_version": 3,
   "version": "2.0.0",
-  "name": "LeetDaily - LeetCode & DSA Interview Preparation",
+  "name": "Memoize - DSA Interview Companion",
+  "description": "Practice DSA interview problems from NeetCode 150, Blind 75 and Grind 169, then review the ones you missed with spaced repetition.",
   "action": {
     "default_popup": "index.html"
   },

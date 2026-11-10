@@ -100,7 +100,7 @@ function Dashboard() {
     });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `leetdaily-backup-${now}.json`;
+    a.download = `memoize-backup-${now}.json`;
     a.click();
     URL.revokeObjectURL(a.href);
   };
@@ -155,7 +155,7 @@ function Dashboard() {
     <div className="dash">
       <header className="dash-header">
         <div>
-          <h1>LeetDaily</h1>
+          <h1>Memoize</h1>
           <p className="muted">
             {streak.days > 0 &&
               `${streak.days} day streak (best ${streak.best}), `}
