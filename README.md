@@ -1,8 +1,10 @@
 # Spaced Complexity
 
-Spaced Complexity is a Chrome and Firefox companion for DSA interview preparation. It serves random problems from NeetCode 150, Blind 75, Grind 169 or your own lists, and brings the ones you struggled with back on a spaced-repetition schedule so the knowledge sticks.
+Spaced Complexity is a Chrome and Firefox companion for LeetCode and DSA interview preparation. It serves random problems from NeetCode 150, Blind 75, Grind 169 or your own lists, and brings the ones you struggled with back on a spaced-repetition schedule so the knowledge sticks.
 
 Random practice is good for exposure, but consolidating what you have already seen is what makes it stay. Spaced Complexity is built around that second part.
+
+This is an independent project and is not affiliated with LeetCode or NeetCode.
 
 ## How it is meant to be used
 
