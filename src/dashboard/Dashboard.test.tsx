@@ -148,4 +148,13 @@ describe("Dashboard", () => {
 
     expect(localStorage.getItem("ld:sync:activeList")).toBe('"grind169"');
   });
+
+  test("theme toggle switches the dashboard to dark and saves it", async () => {
+    render(<Dashboard />);
+
+    await userEvent.click(await screen.findByTestId("theme_toggle"));
+
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(localStorage.getItem("theme")).toBe("dark");
+  });
 });

@@ -221,3 +221,15 @@ body {
   opacity: 0.5;
   cursor: default;
 }
+
+.dash-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.dash-icon-btn svg {
+  width: 18px;
+  height: 18px;
+}

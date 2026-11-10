@@ -17,7 +17,7 @@ import {
 } from "../progress/records";
 import { useProgress } from "../progress/useProgress";
 import { storageSet } from "../storage/storage";
-import { applyTheme, getTheme, saveTheme, Theme } from "../theme/theme";
+import ThemeToggle from "../components/theme/ThemeToggle";
 import "./dashboard.css";
 
 type Filter = "all" | "unsolved" | "solved" | "queued";
@@ -56,7 +56,6 @@ function Dashboard() {
   const [newInput, setNewInput] = useState("");
   const { active: list, setActiveId } = useActiveList(lists);
   const [filter, setFilter] = useState<Filter>("all");
-  const [theme, setTheme] = useState<Theme>(getTheme);
   const [message, setMessage] = useState("");
 
   const now = today();
@@ -72,13 +71,6 @@ function Dashboard() {
     if (filter === "queued") return (rec?.box ?? 0) > 0;
     return true;
   });
-
-  const toggleTheme = () => {
-    const next: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    applyTheme(next);
-    saveTheme(next);
-  };
 
   const resetListProgress = () => {
     if (
@@ -180,13 +172,7 @@ function Dashboard() {
               onChange={importBackup}
             />
           </label>
-          <button
-            className="dash-btn"
-            data-testid="theme_toggle"
-            onClick={toggleTheme}
-          >
-            {theme === "dark" ? "Light" : "Dark"}
-          </button>
+          <ThemeToggle className="dash-btn dash-icon-btn" />
         </div>
       </header>
 
