@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "version": "2.0.0",
+  "version": "2.1.0",
   "name": "Spaced Complexity - Companion for LeetCode",
   "description": "Practice LeetCode interview problems from NeetCode 150, Blind 75 and Grind 169, then review missed ones with spaced repetition.",
   "action": {
