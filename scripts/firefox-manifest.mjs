@@ -4,7 +4,7 @@
 
 // Required for chrome.storage.sync to work in Firefox. Change it if you
 // publish under your own add-on ID.
-export const GECKO_ID = "leetdaily@f-okd.github.io";
+export const GECKO_ID = "leetdaily@fokude.github.io";
 
 // Firefox rejects add-on names longer than 45 characters.
 const FIREFOX_NAME = "LeetDaily - LeetCode & DSA Interview Prep";

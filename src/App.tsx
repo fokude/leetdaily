@@ -6,6 +6,7 @@ import Button from "./components/button/Button";
 import Link from "./components/link/Link";
 import { Category } from "./problems/__data__/Problems";
 import { applyTheme, getTheme, saveTheme, Theme } from "./theme/theme";
+import { SOURCE_CODE_URL } from "./links";
 import { sendMessageToBackground } from "./chrome/chrome-utils";
 import {
   ProblemLink,
@@ -117,7 +118,7 @@ function App() {
   };
 
   const openSourceCode = async () => {
-    chrome.tabs.create({ url: "https://github.com/f-okd/leetdaily" });
+    chrome.tabs.create({ url: SOURCE_CODE_URL });
   };
 
   const openDailyChallange = async () => {

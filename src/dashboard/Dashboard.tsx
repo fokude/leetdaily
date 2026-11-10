@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from "react";
+import { SOURCE_CODE_URL } from "../links";
 import { MAX_SLUGS } from "../lists/customStore";
 import { parseListInput } from "../lists/parseList";
 import { useLists } from "../lists/useLists";
@@ -398,11 +399,7 @@ function Dashboard() {
       </section>
 
       <footer className="dash-footer">
-        <a
-          href="https://github.com/f-okd/leetdaily"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href={SOURCE_CODE_URL} target="_blank" rel="noreferrer">
           Source code
         </a>
       </footer>

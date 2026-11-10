@@ -50,7 +50,7 @@ describe("App.tsx", () => {
     await userEvent.click(link);
 
     expect(createTabMock).toHaveBeenCalledWith({
-      url: "https://github.com/f-okd/leetdaily",
+      url: "https://github.com/fokude/leetdaily",
     });
 
     vi.unstubAllGlobals();

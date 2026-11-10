@@ -9,7 +9,7 @@ Follow these steps to clone and run the project on your local machine:
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/f-okd/leetdaily
+   git clone https://github.com/fokude/leetdaily
    ```
 
 2. Navigate to the project directory:
