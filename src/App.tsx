@@ -14,8 +14,9 @@ import {
   slugOf,
 } from "./lists/catalog";
 import {
-  markForRevisit,
-  markSolved,
+  Rating,
+  applyRating,
+  dueSlugs,
   queuedSlugs,
   today,
 } from "./progress/records";
@@ -39,22 +40,17 @@ function App() {
     );
   }, []);
 
-  const queue = queuedSlugs(progress);
+  const queued = queuedSlugs(progress);
+  const due = dueSlugs(progress, today());
 
   const finishRating = () => {
     storageRemove([LAST_OPENED_KEY], "local");
     setLastOpened(null);
   };
 
-  const handleGotIt = () => {
+  const handleRating = (rating: Rating) => {
     if (!lastOpened) return;
-    update([lastOpened], (rec) => markSolved(rec, today()));
-    finishRating();
-  };
-
-  const handleRevisit = () => {
-    if (!lastOpened) return;
-    update([lastOpened], (rec) => markForRevisit(rec, today()));
+    update([lastOpened], (rec) => applyRating(rec, rating, today()));
     finishRating();
   };
 
@@ -113,7 +109,7 @@ function App() {
   };
 
   const openRevisit = () => {
-    if (queue.length) openProblem(problemFromSlug(queue[0]));
+    if (due.length) openProblem(problemFromSlug(due[0]));
   };
 
   const openSourceCode = async () => {
@@ -183,15 +179,26 @@ function App() {
             How did <strong>{problemName(lastOpened)}</strong> go?
           </p>
           <div className="recall-actions">
-            <Button id="got_it_button" onClick={handleGotIt} variant="primary">
-              <span>Got it</span>
+            <Button
+              id="nailed_button"
+              onClick={() => handleRating("nailed")}
+              variant="primary"
+            >
+              <span>Nailed it</span>
             </Button>
             <Button
-              id="revisit_button"
-              onClick={handleRevisit}
+              id="shaky_button"
+              onClick={() => handleRating("shaky")}
               variant="secondary"
             >
-              <span>Revisit later</span>
+              <span>Shaky</span>
+            </Button>
+            <Button
+              id="missed_button"
+              onClick={() => handleRating("missed")}
+              variant="secondary"
+            >
+              <span>Missed</span>
             </Button>
           </div>
         </div>
@@ -249,11 +256,12 @@ function App() {
           id="revisit_queue_button"
           onClick={openRevisit}
           variant="secondary"
+          disabled={due.length === 0}
         >
           <span>
-            {queue.length > 0
-              ? `Revisit a missed one (${queue.length})`
-              : "Nothing to revisit yet"}
+            {due.length > 0
+              ? `Review due (${due.length})`
+              : `Nothing due (${queued.length} queued)`}
           </span>
         </Button>
 

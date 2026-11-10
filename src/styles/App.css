@@ -513,3 +513,15 @@ input:checked + .slider:before {
   width: 16px;
   height: 16px;
 }
+
+.recall-actions .btn {
+  padding: 10px 6px;
+  font-size: 0.8rem;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}

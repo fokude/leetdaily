@@ -179,7 +179,7 @@ describe("App.tsx", () => {
     vi.unstubAllGlobals();
   });
 
-  test("marking last problem as revisit adds it to the revisit queue", async () => {
+  test("rating last problem as missed queues it for tomorrow", async () => {
     localStorage.clear();
     vi.stubGlobal("chrome", {
       tabs: {
@@ -195,11 +195,11 @@ describe("App.tsx", () => {
 
     render(<App />);
     expect(await screen.findByTestId("recall_card")).toBeInTheDocument();
-    await userEvent.click(screen.getByTestId("revisit_button"));
+    await userEvent.click(screen.getByTestId("missed_button"));
 
     expect(screen.queryByTestId("recall_card")).not.toBeInTheDocument();
     expect(await screen.findByTestId("revisit_queue_button")).toHaveTextContent(
-      "(1)",
+      "1 queued",
     );
 
     vi.unstubAllGlobals();
