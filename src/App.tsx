@@ -1,22 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./styles/App.css";
 import { ProblemEndpoint } from "./problems/ProblemEndpoint";
 import CategorySelect from "./components/category/CategorySelect";
 import Button from "./components/button/Button";
 import Link from "./components/link/Link";
-import { Category, Problem } from "./problems/__data__/Problems";
+import { Category } from "./problems/__data__/Problems";
 import { applyTheme, getTheme, saveTheme, Theme } from "./theme/theme";
 import { sendMessageToBackground } from "./chrome/chrome-utils";
 import {
-  addToQueue,
-  clearLastOpened,
-  getLastOpened,
-  getQueue,
-  pickFromQueue,
+  ProblemLink,
+  problemFromSlug,
   problemName,
-  removeFromQueue,
-  setLastOpened,
-} from "./revisit/revisitStore";
+  slugOf,
+} from "./lists/catalog";
+import {
+  markForRevisit,
+  markSolved,
+  queuedSlugs,
+  today,
+} from "./progress/records";
+import { useProgress } from "./progress/useProgress";
+import { storageGet, storageRemove, storageSet } from "./storage/storage";
+
+const LAST_OPENED_KEY = "lastOpened";
 
 function App() {
   const [category, setCategory] = useState<Category>(Category.ALL);
@@ -24,28 +30,39 @@ function App() {
     return localStorage.getItem("useNeetCode") === "true";
   });
 
-  const [queue, setQueue] = useState<Problem[]>(getQueue);
-  const [lastOpened, setLastOpenedState] = useState<Problem | null>(
-    getLastOpened,
-  );
+  const { progress, update } = useProgress();
+  const [lastOpened, setLastOpened] = useState<string | null>(null);
+
+  useEffect(() => {
+    storageGet<string>([LAST_OPENED_KEY], "local").then((res) =>
+      setLastOpened(res[LAST_OPENED_KEY] ?? null),
+    );
+  }, []);
+
+  const queue = queuedSlugs(progress);
+
+  const finishRating = () => {
+    storageRemove([LAST_OPENED_KEY], "local");
+    setLastOpened(null);
+  };
 
   const handleGotIt = () => {
     if (!lastOpened) return;
-    setQueue(removeFromQueue(lastOpened));
-    clearLastOpened();
-    setLastOpenedState(null);
+    update([lastOpened], (rec) => markSolved(rec, today()));
+    finishRating();
   };
 
   const handleRevisit = () => {
     if (!lastOpened) return;
-    setQueue(addToQueue(lastOpened));
-    clearLastOpened();
-    setLastOpenedState(null);
+    update([lastOpened], (rec) => markForRevisit(rec, today()));
+    finishRating();
   };
 
-  const openProblem = (problem: Problem) => {
-    setLastOpened(problem);
-    openUrl(useNeetCode ? problem.neetcode : problem.leetcode);
+  const openProblem = (problem: ProblemLink) => {
+    storageSet({ [LAST_OPENED_KEY]: problem.slug }, "local");
+    openUrl(
+      useNeetCode && problem.neetcode ? problem.neetcode : problem.leetcode,
+    );
   };
 
   const [theme, setTheme] = useState<Theme>(getTheme);
@@ -91,12 +108,12 @@ function App() {
   };
 
   const open150 = async () => {
-    openProblem(new ProblemEndpoint().getRandomProblem(category));
+    const picked = new ProblemEndpoint().getRandomProblem(category);
+    openProblem(problemFromSlug(slugOf(picked.leetcode)));
   };
 
   const openRevisit = () => {
-    const problem = pickFromQueue(queue);
-    if (problem) openProblem(problem);
+    if (queue.length) openProblem(problemFromSlug(queue[0]));
   };
 
   const openSourceCode = async () => {

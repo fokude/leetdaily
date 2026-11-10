@@ -194,11 +194,13 @@ describe("App.tsx", () => {
     unmount();
 
     render(<App />);
-    expect(screen.getByTestId("recall_card")).toBeInTheDocument();
+    expect(await screen.findByTestId("recall_card")).toBeInTheDocument();
     await userEvent.click(screen.getByTestId("revisit_button"));
 
     expect(screen.queryByTestId("recall_card")).not.toBeInTheDocument();
-    expect(screen.getByTestId("revisit_queue_button")).toHaveTextContent("(1)");
+    expect(await screen.findByTestId("revisit_queue_button")).toHaveTextContent(
+      "(1)",
+    );
 
     vi.unstubAllGlobals();
   });
