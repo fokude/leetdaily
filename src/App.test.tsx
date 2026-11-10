@@ -202,4 +202,17 @@ describe("App.tsx", () => {
 
     vi.unstubAllGlobals();
   });
+
+  test("theme defaults to light and toggle saves dark preference", async () => {
+    localStorage.clear();
+    render(<App />);
+
+    await userEvent.click(screen.getByTestId("theme_toggle"));
+
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(localStorage.getItem("theme")).toBe("dark");
+
+    await userEvent.click(screen.getByTestId("theme_toggle"));
+    expect(localStorage.getItem("theme")).toBe("light");
+  });
 });

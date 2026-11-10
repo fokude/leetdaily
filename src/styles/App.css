@@ -184,7 +184,7 @@ h1.app-title {
 
 .custom-dropdown-trigger:hover {
   border-color: var(--primary);
-  background-color: #ffffff;
+  background-color: var(--bg-raised);
 }
 
 .custom-dropdown-trigger:focus-visible {
@@ -209,7 +209,7 @@ h1.app-title {
   top: calc(100% + 6px);
   left: 0;
   right: 0;
-  background-color: #ffffff;
+  background-color: var(--bg-raised);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
@@ -442,7 +442,7 @@ h1.app-title {
   width: 16px;
   left: 3px;
   bottom: 3px;
-  background-color: #ffffff;
+  background-color: var(--knob);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -480,4 +480,36 @@ input:checked + .slider:before {
 .recall-actions {
   display: flex;
   gap: 8px;
+}
+
+/* Theme toggle */
+.header {
+  position: relative;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--secondary);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.theme-toggle:hover {
+  color: var(--primary);
+  border-color: var(--border-glow);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
 }

@@ -23,6 +23,8 @@
   --text-main: #2d3629; /* Soft forest black/dark matcha */
   --text-muted: #6e7968; /* Matcha gray-green */
   --text-inverse: #ffffff; /* White text on dark buttons */
+  --bg-raised: #ffffff; /* Dropdown menus, hovered inputs */
+  --knob: #ffffff; /* Toggle knob */
 
   --radius-lg: 16px;
   --radius-md: 12px;
@@ -32,6 +34,36 @@
   --shadow-md: 0 8px 24px rgba(124, 148, 115, 0.12);
   --shadow-lg: 0 16px 40px rgba(124, 148, 115, 0.18);
   --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --bg-main: #1a1f18;
+  --bg-card: #232a21;
+  --bg-input: #1f251d;
+  --border-color: rgba(168, 190, 160, 0.16);
+  --border-glow: rgba(168, 190, 160, 0.3);
+
+  --primary: #8fae84;
+  --primary-hover: #a3c098;
+  --primary-glow: rgba(143, 174, 132, 0.2);
+
+  --secondary: #2c3529;
+  --secondary-hover: #364132;
+
+  --accent-yellow: #3a3420;
+  --accent-yellow-border: rgba(224, 189, 87, 0.3);
+  --accent-yellow-text: #e6cf8a;
+
+  --text-main: #e8ede4;
+  --text-muted: #9aa794;
+  --text-inverse: #14180f;
+  --bg-raised: #2a3227;
+  --knob: #e8ede4;
+
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
 }
 
 * {
