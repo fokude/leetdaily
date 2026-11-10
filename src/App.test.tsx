@@ -278,14 +278,17 @@ describe("App.tsx", () => {
 
     expect(screen.getByTestId("category_select")).toBeInTheDocument();
 
-    await userEvent.selectOptions(screen.getByTestId("list_select"), "blind75");
+    await userEvent.click(screen.getByTestId("list_select"));
+    await userEvent.click(screen.getByTestId("list_option_blind75"));
 
     expect(screen.queryByTestId("category_select")).not.toBeInTheDocument();
     expect(localStorage.getItem("ld:sync:activeList")).toBe('"blind75"');
     unmount();
 
     render(<App />);
-    expect(await screen.findByTestId("list_select")).toHaveValue("blind75");
+    expect(await screen.findByTestId("list_select")).toHaveTextContent(
+      "Blind 75",
+    );
   });
 
   test("Go picks a problem from the selected list", async () => {
@@ -301,10 +304,8 @@ describe("App.tsx", () => {
     });
 
     render(<App />);
-    await userEvent.selectOptions(
-      screen.getByTestId("list_select"),
-      "grind169",
-    );
+    await userEvent.click(screen.getByTestId("list_select"));
+    await userEvent.click(screen.getByTestId("list_option_grind169"));
     await userEvent.click(screen.getByTestId("search_button"));
 
     // first Grind 169 problem
@@ -313,5 +314,19 @@ describe("App.tsx", () => {
     });
 
     vi.unstubAllGlobals();
+  });
+
+  test("list dropdown closes on Escape and marks the current list", async () => {
+    localStorage.clear();
+    render(<App />);
+
+    await userEvent.click(screen.getByTestId("list_select"));
+    expect(screen.getByTestId("list_option_neetcode150")).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+
+    await userEvent.keyboard("{Escape}");
+    expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
   });
 });

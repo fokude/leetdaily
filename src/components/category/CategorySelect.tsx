@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Category } from "../../problems/__data__/Problems";
+import { useDismiss } from "../dropdown/useDismiss";
 
 const categoryDisplayNames: Record<keyof typeof Category, string> = {
   ALL: "All",
@@ -30,20 +31,8 @@ const CategorySelect = ({ onChange }: ICategorySelect) => {
   const [selectedKey, setSelectedKey] = useState<keyof typeof Category>("ALL");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const close = useCallback(() => setIsOpen(false), []);
+  useDismiss(dropdownRef, close);
 
   const handleSelect = (key: keyof typeof Category) => {
     setSelectedKey(key);

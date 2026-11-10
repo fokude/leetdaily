@@ -567,36 +567,40 @@ input:checked + .slider:before {
 /* List selector in the header badge */
 .list-select-wrap {
   position: relative;
-  padding-right: 24px;
+  display: inline-block;
 }
 
-.list-select-wrap:focus-within {
+.list-select-trigger {
+  gap: 6px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.list-select-trigger:hover,
+.list-select-trigger:focus-visible {
+  border-color: var(--primary);
+  outline: none;
   box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
-.list-select {
-  appearance: none;
-  background: transparent;
-  border: none;
-  outline: none;
-  font: inherit;
-  color: inherit;
-  text-transform: inherit;
-  letter-spacing: inherit;
-  cursor: pointer;
-}
-
-.list-select option {
-  background: var(--bg-card);
-  color: var(--text-main);
-  text-transform: none;
-  letter-spacing: normal;
-}
-
 .list-select-chevron {
-  position: absolute;
-  right: 8px;
   width: 12px;
   height: 12px;
-  pointer-events: none;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.list-select-chevron.open {
+  transform: rotate(180deg);
+}
+
+/* Centered under the badge. Uses margin, not transform, because the
+   dropIn animation owns transform. */
+.list-select-menu {
+  left: 50%;
+  right: auto;
+  width: 210px;
+  margin-left: -105px;
+  text-align: left;
 }
