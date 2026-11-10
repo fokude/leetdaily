@@ -352,6 +352,7 @@ h1.app-title {
 .footer {
   display: flex;
   justify-content: center;
+  gap: 8px;
   margin-top: 8px;
 }
 

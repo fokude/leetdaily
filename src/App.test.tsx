@@ -217,4 +217,21 @@ describe("App.tsx", () => {
     await userEvent.click(screen.getByTestId("theme_toggle"));
     expect(localStorage.getItem("theme")).toBe("light");
   });
+
+  test("dashboard link opens the dashboard page in a new tab", async () => {
+    const createTabMock = vi.fn();
+    vi.stubGlobal("chrome", {
+      tabs: { create: createTabMock },
+      runtime: { getURL: (path: string) => `chrome-extension://abc/${path}` },
+    });
+
+    render(<App />);
+    await userEvent.click(screen.getByTestId("dashboard_link"));
+
+    expect(createTabMock).toHaveBeenCalledWith({
+      url: "chrome-extension://abc/dashboard.html",
+    });
+
+    vi.unstubAllGlobals();
+  });
 });

@@ -1,0 +1,197 @@
+/* index.css sizes the body for the 350px popup, undo that here. */
+html {
+  border-radius: 0;
+  overflow: auto;
+}
+
+body {
+  min-width: 0;
+  max-width: none;
+  min-height: 100vh;
+  border-radius: 0;
+}
+
+.dash {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 32px 16px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dash h1 {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+}
+
+.dash h2 {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+}
+
+.muted {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.dash a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.dash a:hover {
+  text-decoration: underline;
+}
+
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dash-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dash-btn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--secondary);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.dash-btn:hover {
+  background: var(--secondary-hover);
+  border-color: var(--border-glow);
+}
+
+.dash-message {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-yellow);
+  color: var(--accent-yellow-text);
+  font-size: 0.85rem;
+}
+
+.dash-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dash-tab {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.dash-tab.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-inverse);
+}
+
+.dash-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.dash-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.dash-select {
+  font-family: inherit;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-input);
+  color: var(--text-main);
+}
+
+.dash-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--secondary);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.dash-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.dash-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.dash-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  padding: 6px 10px;
+}
+
+.dash-table td {
+  padding: 8px 10px;
+  border-top: 1px solid var(--border-color);
+}
+
+.dash-table tr.solved td {
+  background: var(--primary-glow);
+}
+
+.dash-table tr.queued td:last-child,
+.dash-table tr.queued td:nth-child(3) {
+  color: var(--accent-yellow-text);
+  font-weight: 600;
+}
+
+.dash-link {
+  font-family: inherit;
+  font-size: 0.85rem;
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 0;
+}
+
+.dash-link:hover {
+  text-decoration: underline;
+}
+
+.dash-footer {
+  text-align: center;
+  font-size: 0.8rem;
+}

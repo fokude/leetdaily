@@ -42,5 +42,15 @@ export const useProgress = () => {
     return saveProgress(next, slugs);
   }, []);
 
-  return { progress, loaded, update };
+  /** Replace everything, e.g. when restoring a backup. */
+  const replaceAll = useCallback((map: ProgressMap) => {
+    const slugs = [
+      ...new Set([...Object.keys(ref.current), ...Object.keys(map)]),
+    ];
+    ref.current = map;
+    setProgress(map);
+    return saveProgress(map, slugs);
+  }, []);
+
+  return { progress, loaded, update, replaceAll };
 };
