@@ -34,6 +34,14 @@ Follow these steps to clone and run the project on your local machine:
    - Drag `./dist` folder into the box
    - You should be able to see the extension in your extensions tab
 
+### Firefox
+
+```bash
+npm run start:firefox
+```
+
+This builds the extension, writes a Firefox version to `./dist-firefox` and opens it in a temporary Firefox profile using `web-ext`. Use `npm run package:firefox` to create a zip for addons.mozilla.org. The add-on ID Firefox needs for sync is set in `scripts/firefox-manifest.mjs`.
+
 Every time you make a change to the code, make sure you rebuild locally then click reload extension on the extensions dashboard.
 
 ## How to Test

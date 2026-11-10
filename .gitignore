@@ -10,6 +10,8 @@ lerna-debug.log*
 coverage
 node_modules
 dist
+dist-firefox
+web-ext-artifacts
 dist-ssr
 *.local
 
