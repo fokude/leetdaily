@@ -6,6 +6,8 @@ import App from "./App";
 
 describe("App.tsx", () => {
   beforeEach(async () => {
+    // happy-dom's real window.close would tear down the test window
+    vi.spyOn(window, "close").mockImplementation(() => {});
     const LeetcodeEndpoint = (await import("./leetcode/LeetcodeEndpoint"))
       .default;
     vi.spyOn(
@@ -233,5 +235,40 @@ describe("App.tsx", () => {
     });
 
     vi.unstubAllGlobals();
+  });
+
+  test("popup closes after Go so reopening it shows the rating prompt", async () => {
+    vi.stubGlobal("chrome", {
+      tabs: {
+        query: vi.fn().mockImplementation((_q, cb) => cb([{ id: 1 }])),
+        update: vi.fn(),
+        create: vi.fn(),
+      },
+    });
+
+    render(<App />);
+    await userEvent.click(screen.getByTestId("search_button"));
+
+    expect(window.close).toHaveBeenCalled();
+
+    vi.unstubAllGlobals();
+  });
+
+  test("rating prompt is a modal dialog and can be skipped without rating", async () => {
+    localStorage.clear();
+    localStorage.setItem("ld:local:lastOpened", JSON.stringify("two-sum"));
+
+    render(<App />);
+
+    const dialog = await screen.findByRole("dialog");
+    expect(dialog).toHaveTextContent("Two Sum");
+
+    await userEvent.click(screen.getByTestId("skip_button"));
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    const savedKeys = Object.keys(localStorage).filter((k) =>
+      k.startsWith("ld:sync:"),
+    );
+    expect(savedKeys).toEqual([]);
   });
 });

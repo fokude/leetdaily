@@ -101,6 +101,8 @@ function App() {
       } else {
         chrome.tabs.create({ url });
       }
+      // Reopening the popup is how the user rates the problem, so close it.
+      window.close();
     });
   };
 
@@ -115,6 +117,7 @@ function App() {
 
   const openDashboard = () => {
     chrome.tabs.create({ url: chrome.runtime.getURL("dashboard.html") });
+    window.close();
   };
 
   const openSourceCode = async () => {
@@ -132,7 +135,28 @@ function App() {
       <div className="header">
         <button
           type="button"
-          className="theme-toggle"
+          className="icon-button icon-button-left"
+          data-testid="dashboard_link"
+          aria-label="Open dashboard"
+          onClick={openDashboard}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          className="icon-button icon-button-right"
           data-testid="theme_toggle"
           aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           onClick={toggleTheme}
@@ -179,32 +203,48 @@ function App() {
       </div>
 
       {lastOpened && (
-        <div className="card recall-card" data-testid="recall_card">
-          <p className="recall-title">
-            How did <strong>{problemName(lastOpened)}</strong> go?
-          </p>
-          <div className="recall-actions">
-            <Button
-              id="nailed_button"
-              onClick={() => handleRating("nailed")}
-              variant="primary"
+        <div className="modal-backdrop">
+          <div
+            className="card recall-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="recall_title"
+            data-testid="recall_card"
+          >
+            <p id="recall_title" className="recall-title">
+              How did <strong>{problemName(lastOpened)}</strong> go?
+            </p>
+            <div className="recall-actions">
+              <Button
+                id="nailed_button"
+                onClick={() => handleRating("nailed")}
+                variant="primary"
+              >
+                <span>Nailed it</span>
+              </Button>
+              <Button
+                id="shaky_button"
+                onClick={() => handleRating("shaky")}
+                variant="secondary"
+              >
+                <span>Shaky</span>
+              </Button>
+              <Button
+                id="missed_button"
+                onClick={() => handleRating("missed")}
+                variant="secondary"
+              >
+                <span>Missed</span>
+              </Button>
+            </div>
+            <button
+              type="button"
+              className="recall-skip"
+              data-testid="skip_button"
+              onClick={finishRating}
             >
-              <span>Nailed it</span>
-            </Button>
-            <Button
-              id="shaky_button"
-              onClick={() => handleRating("shaky")}
-              variant="secondary"
-            >
-              <span>Shaky</span>
-            </Button>
-            <Button
-              id="missed_button"
-              onClick={() => handleRating("missed")}
-              variant="secondary"
-            >
-              <span>Missed</span>
-            </Button>
+              Skip
+            </button>
           </div>
         </div>
       )}
@@ -294,9 +334,6 @@ function App() {
       </div>
 
       <div className="footer">
-        <Link onClick={openDashboard} testId="dashboard_link">
-          <span>Dashboard</span>
-        </Link>
         <Link onClick={openSourceCode}>
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />

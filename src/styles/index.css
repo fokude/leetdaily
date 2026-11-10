@@ -75,7 +75,8 @@
 html {
   background-color: transparent;
   border-radius: 24px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {

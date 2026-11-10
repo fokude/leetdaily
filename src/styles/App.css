@@ -1,6 +1,6 @@
 #root {
   width: 100%;
-  padding: 24px 20px;
+  padding: 16px 20px 12px;
   background: radial-gradient(
     circle at 50% 0%,
     rgba(124, 148, 115, 0.15) 0%,
@@ -23,8 +23,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 54px;
+  width: 44px;
+  height: 44px;
   border-radius: 14px;
   background: linear-gradient(
     135deg,
@@ -35,7 +35,7 @@
   box-shadow:
     0 8px 20px rgba(124, 148, 115, 0.08),
     inset 0 1px 1px rgba(255, 255, 255, 0.8);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   transition: var(--transition);
   position: relative;
 }
@@ -118,12 +118,12 @@ h1.app-title {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 20px;
-  margin: 16px 0;
+  padding: 16px;
+  margin: 12px 0;
   box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   transition: var(--transition);
 }
 
@@ -488,10 +488,9 @@ input:checked + .slider:before {
   position: relative;
 }
 
-.theme-toggle {
+.icon-button {
   position: absolute;
   top: 0;
-  right: 0;
   width: 32px;
   height: 32px;
   display: flex;
@@ -505,12 +504,12 @@ input:checked + .slider:before {
   transition: var(--transition);
 }
 
-.theme-toggle:hover {
+.icon-button:hover {
   color: var(--primary);
   border-color: var(--border-glow);
 }
 
-.theme-toggle svg {
+.icon-button svg {
   width: 16px;
   height: 16px;
 }
@@ -525,4 +524,42 @@ input:checked + .slider:before {
   cursor: default;
   transform: none;
   box-shadow: none;
+}
+
+.icon-button-left {
+  left: 0;
+}
+
+.icon-button-right {
+  right: 0;
+}
+
+/* Rating modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(20, 24, 18, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.modal-backdrop .recall-card {
+  width: 100%;
+  margin: 0;
+  box-shadow: var(--shadow-lg);
+}
+
+.recall-skip {
+  align-self: center;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--accent-yellow-text);
+  text-decoration: underline;
+  cursor: pointer;
 }
