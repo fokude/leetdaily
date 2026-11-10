@@ -1,10 +1,11 @@
 import { ChangeEvent, useState } from "react";
-import { BUILT_IN_LISTS, ProblemList } from "../lists/builtin";
+import { MAX_SLUGS } from "../lists/customStore";
+import { parseListInput } from "../lists/parseList";
+import { useLists } from "../lists/useLists";
 import { problemFromSlug, problemName } from "../lists/catalog";
 import { dueLabel, lastLabel } from "../progress/format";
 import { parseBackup, serializeBackup } from "../progress/backup";
 import {
-  ProgressMap,
   dueSlugs,
   markForRevisit,
   queuedSlugs,
@@ -47,7 +48,10 @@ function ProblemLink({ slug }: { slug: string }) {
 
 function Dashboard() {
   const { progress, loaded, update, replaceAll } = useProgress();
-  const lists: ProblemList[] = BUILT_IN_LISTS;
+  const { lists, custom, addList, removeList, replaceCustom } = useLists();
+  const [creating, setCreating] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newInput, setNewInput] = useState("");
   const [listId, setListId] = useState(lists[0].id);
   const [filter, setFilter] = useState<Filter>("all");
   const [theme, setTheme] = useState<Theme>(getTheme);
@@ -96,7 +100,7 @@ function Dashboard() {
   };
 
   const exportBackup = () => {
-    const blob = new Blob([serializeBackup(progress)], {
+    const blob = new Blob([serializeBackup(progress, custom)], {
       type: "application/json",
     });
     const a = document.createElement("a");
@@ -106,17 +110,47 @@ function Dashboard() {
     URL.revokeObjectURL(a.href);
   };
 
+  const parsedInput = parseListInput(newInput);
+
+  const createList = async () => {
+    try {
+      const id = await addList(newName.trim(), parsedInput.slugs);
+      setListId(id);
+      setCreating(false);
+      setMessage(`Created ${newName.trim()}.`);
+      setNewName("");
+      setNewInput("");
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "Could not save list.");
+    }
+  };
+
+  const deleteList = async () => {
+    if (
+      !window.confirm(
+        `Delete the list "${list.name}"? Progress on its problems is kept.`,
+      )
+    ) {
+      return;
+    }
+    await removeList(list.id);
+    setListId(lists[0].id);
+  };
+
   const importBackup = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
     try {
-      const imported: ProgressMap = parseBackup(await file.text());
+      const imported = parseBackup(await file.text());
       if (!window.confirm("Replace all current progress with this backup?")) {
         return;
       }
-      await replaceAll(imported);
-      setMessage(`Imported ${Object.keys(imported).length} problems.`);
+      await replaceAll(imported.progress);
+      await replaceCustom(imported.lists);
+      setMessage(
+        `Imported ${Object.keys(imported.progress).length} problems and ${imported.lists.length} custom lists.`,
+      );
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Import failed.");
     }
@@ -168,7 +202,55 @@ function Dashboard() {
             {l.name}
           </button>
         ))}
+        <button
+          className="dash-tab"
+          data-testid="new_list_button"
+          onClick={() => setCreating(!creating)}
+        >
+          + New list
+        </button>
       </nav>
+
+      {creating && (
+        <section className="dash-card dash-form">
+          <h2>New list</h2>
+          <input
+            className="dash-input"
+            placeholder="List name"
+            data-testid="list_name"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+          />
+          <textarea
+            className="dash-input"
+            rows={6}
+            placeholder="Paste LeetCode URLs or slugs, one per line"
+            data-testid="list_input"
+            value={newInput}
+            onChange={(e) => setNewInput(e.target.value)}
+          />
+          <p className="muted" data-testid="list_preview">
+            {parsedInput.slugs.length} problems found
+            {parsedInput.skipped.length > 0 &&
+              `, ${parsedInput.skipped.length} skipped (${parsedInput.skipped
+                .slice(0, 3)
+                .join(", ")}${parsedInput.skipped.length > 3 ? ", ..." : ""})`}
+            . Max {MAX_SLUGS} per list.
+          </p>
+          <button
+            className="dash-btn"
+            data-testid="create_list_button"
+            disabled={
+              !newName.trim() ||
+              parsedInput.slugs.length === 0 ||
+              parsedInput.slugs.length > MAX_SLUGS
+            }
+            onClick={createList}
+          >
+            Create list
+          </button>
+        </section>
+      )}
 
       <section className="dash-card">
         <div className="dash-progress-row">
@@ -303,6 +385,15 @@ function Dashboard() {
           >
             Reset revisit queue
           </button>
+          {!list.builtIn && (
+            <button
+              className="dash-btn"
+              data-testid="delete_list"
+              onClick={deleteList}
+            >
+              Delete {list.name}
+            </button>
+          )}
         </div>
       </section>
 

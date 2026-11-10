@@ -94,4 +94,45 @@ describe("Dashboard", () => {
 
     expect((await loadProgress())["two-sum"].solved).toBe(true);
   });
+
+  test("creates a custom list from pasted urls and shows its progress", async () => {
+    render(<Dashboard />);
+
+    await userEvent.click(await screen.findByTestId("new_list_button"));
+    await userEvent.type(screen.getByTestId("list_name"), "My list");
+    await userEvent.type(
+      screen.getByTestId("list_input"),
+      "https://leetcode.com/problems/two-sum/{enter}lru-cache{enter}Not A Slug",
+    );
+    expect(screen.getByTestId("list_preview")).toHaveTextContent(
+      "2 problems found, 1 skipped",
+    );
+
+    await userEvent.click(screen.getByTestId("create_list_button"));
+
+    expect(await screen.findByTestId("list_progress")).toHaveTextContent(
+      "0 / 2 solved",
+    );
+    expect(screen.getByTestId("row_lru-cache")).toBeInTheDocument();
+  });
+
+  test("deleting a custom list keeps problem progress", async () => {
+    window.confirm = vi.fn().mockReturnValue(true);
+    await saveProgress(
+      { "two-sum": applyRating(undefined, "nailed", today()) },
+      ["two-sum"],
+    );
+    render(<Dashboard />);
+
+    await userEvent.click(await screen.findByTestId("new_list_button"));
+    await userEvent.type(screen.getByTestId("list_name"), "Temp");
+    await userEvent.type(screen.getByTestId("list_input"), "two-sum");
+    await userEvent.click(screen.getByTestId("create_list_button"));
+    await userEvent.click(await screen.findByTestId("delete_list"));
+
+    expect(await screen.findByTestId("list_progress")).toHaveTextContent(
+      "/ 150 solved",
+    );
+    expect((await loadProgress())["two-sum"].solved).toBe(true);
+  });
 });

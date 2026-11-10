@@ -195,3 +195,29 @@ body {
   text-align: center;
   font-size: 0.8rem;
 }
+
+.dash-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dash-form h2 {
+  margin-bottom: 0;
+}
+
+.dash-input {
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-input);
+  color: var(--text-main);
+  resize: vertical;
+}
+
+.dash-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
