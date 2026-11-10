@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { SOURCE_CODE_URL } from "../links";
 import { MAX_SLUGS } from "../lists/customStore";
 import { parseListInput } from "../lists/parseList";
+import { useActiveList } from "../lists/useActiveList";
 import { useLists } from "../lists/useLists";
 import { problemFromSlug, problemName } from "../lists/catalog";
 import { dueLabel, lastLabel } from "../progress/format";
@@ -53,13 +54,12 @@ function Dashboard() {
   const [creating, setCreating] = useState(false);
   const [newName, setNewName] = useState("");
   const [newInput, setNewInput] = useState("");
-  const [listId, setListId] = useState(lists[0].id);
+  const { active: list, setActiveId } = useActiveList(lists);
   const [filter, setFilter] = useState<Filter>("all");
   const [theme, setTheme] = useState<Theme>(getTheme);
   const [message, setMessage] = useState("");
 
   const now = today();
-  const list = lists.find((l) => l.id === listId) ?? lists[0];
   const queued = queuedSlugs(progress);
   const dueCount = dueSlugs(progress, now).length;
   const solvedInList = list.slugs.filter((s) => progress[s]?.solved).length;
@@ -116,7 +116,7 @@ function Dashboard() {
   const createList = async () => {
     try {
       const id = await addList(newName.trim(), parsedInput.slugs);
-      setListId(id);
+      setActiveId(id);
       setCreating(false);
       setMessage(`Created ${newName.trim()}.`);
       setNewName("");
@@ -135,7 +135,7 @@ function Dashboard() {
       return;
     }
     await removeList(list.id);
-    setListId(lists[0].id);
+    setActiveId(lists[0].id);
   };
 
   const importBackup = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -198,7 +198,7 @@ function Dashboard() {
             key={l.id}
             data-testid={`tab_${l.id}`}
             className={`dash-tab ${l.id === list.id ? "active" : ""}`}
-            onClick={() => setListId(l.id)}
+            onClick={() => setActiveId(l.id)}
           >
             {l.name}
           </button>

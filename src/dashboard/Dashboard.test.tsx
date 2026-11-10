@@ -135,4 +135,17 @@ describe("Dashboard", () => {
     );
     expect((await loadProgress())["two-sum"].solved).toBe(true);
   });
+
+  test("opens on the saved list and saves the list you switch to", async () => {
+    localStorage.setItem("ld:sync:activeList", JSON.stringify("blind75"));
+    render(<Dashboard />);
+
+    expect(await screen.findByTestId("list_progress")).toHaveTextContent(
+      "/ 75 solved",
+    );
+
+    await userEvent.click(screen.getByTestId("tab_grind169"));
+
+    expect(localStorage.getItem("ld:sync:activeList")).toBe('"grind169"');
+  });
 });

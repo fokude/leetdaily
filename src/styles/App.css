@@ -563,3 +563,40 @@ input:checked + .slider:before {
   text-decoration: underline;
   cursor: pointer;
 }
+
+/* List selector in the header badge */
+.list-select-wrap {
+  position: relative;
+  padding-right: 24px;
+}
+
+.list-select-wrap:focus-within {
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.list-select {
+  appearance: none;
+  background: transparent;
+  border: none;
+  outline: none;
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.list-select option {
+  background: var(--bg-card);
+  color: var(--text-main);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.list-select-chevron {
+  position: absolute;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+}

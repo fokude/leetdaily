@@ -8,6 +8,8 @@ export interface ProblemList {
   builtIn: boolean;
 }
 
+export const NEETCODE_150_ID = "neetcode150";
+
 const neetcode150 = Object.values(problems).flatMap((list) =>
   list.map((p) => slugOf(p.leetcode)),
 );
@@ -264,7 +266,7 @@ const grind169 = [
 
 export const BUILT_IN_LISTS: ProblemList[] = [
   {
-    id: "neetcode150",
+    id: NEETCODE_150_ID,
     name: "NeetCode 150",
     slugs: neetcode150,
     builtIn: true,

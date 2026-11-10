@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import "./styles/App.css";
-import { ProblemEndpoint } from "./problems/ProblemEndpoint";
 import CategorySelect from "./components/category/CategorySelect";
 import Button from "./components/button/Button";
 import Link from "./components/link/Link";
+import ListSelect from "./components/list/ListSelect";
 import { Category } from "./problems/__data__/Problems";
 import { applyTheme, getTheme, saveTheme, Theme } from "./theme/theme";
 import { SOURCE_CODE_URL } from "./links";
 import { sendMessageToBackground } from "./chrome/chrome-utils";
-import {
-  ProblemLink,
-  problemFromSlug,
-  problemName,
-  slugOf,
-} from "./lists/catalog";
+import { NEETCODE_150_ID } from "./lists/builtin";
+import { ProblemLink, problemFromSlug, problemName } from "./lists/catalog";
+import { pickRandomSlug } from "./lists/pick";
+import { useActiveList } from "./lists/useActiveList";
+import { useLists } from "./lists/useLists";
 import {
   Rating,
   applyRating,
@@ -33,6 +32,12 @@ function App() {
   });
 
   const { progress, update } = useProgress();
+  const { lists } = useLists();
+  const { active, setActiveId } = useActiveList(lists);
+  const hasCategories = active.id === NEETCODE_150_ID;
+
+  // Categories only exist for NeetCode 150, so drop any choice when leaving it.
+  useEffect(() => setCategory(Category.ALL), [active.id]);
   const [lastOpened, setLastOpened] = useState<string | null>(null);
 
   useEffect(() => {
@@ -107,8 +112,7 @@ function App() {
   };
 
   const open150 = async () => {
-    const picked = new ProblemEndpoint().getRandomProblem(category);
-    openProblem(problemFromSlug(slugOf(picked.leetcode)));
+    openProblem(problemFromSlug(pickRandomSlug(active, category)));
   };
 
   const openRevisit = () => {
@@ -192,12 +196,10 @@ function App() {
           <h1 data-testid={"title"} className="app-title">
             LeetDaily
           </h1>
-          <div data-testid={"subheading"} className="badge">
-            Neetcode 150
-          </div>
+          <ListSelect lists={lists} value={active.id} onChange={setActiveId} />
           <p className="description">
-            Reinforce your skills with active recall. Select a category to
-            begin.
+            Reinforce your skills with active recall.{" "}
+            {hasCategories ? "Select a category to begin." : "Hit Go to begin."}
           </p>
         </div>
       </div>
@@ -250,7 +252,7 @@ function App() {
       )}
 
       <div className="card">
-        <CategorySelect onChange={setCategory} />
+        {hasCategories && <CategorySelect onChange={setCategory} />}
 
         <div className="toggle-group">
           <span className="toggle-label">

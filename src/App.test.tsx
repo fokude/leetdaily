@@ -271,4 +271,47 @@ describe("App.tsx", () => {
     );
     expect(savedKeys).toEqual([]);
   });
+
+  test("header list selector switches list, hides categories and is remembered", async () => {
+    localStorage.clear();
+    const { unmount } = render(<App />);
+
+    expect(screen.getByTestId("category_select")).toBeInTheDocument();
+
+    await userEvent.selectOptions(screen.getByTestId("list_select"), "blind75");
+
+    expect(screen.queryByTestId("category_select")).not.toBeInTheDocument();
+    expect(localStorage.getItem("ld:sync:activeList")).toBe('"blind75"');
+    unmount();
+
+    render(<App />);
+    expect(await screen.findByTestId("list_select")).toHaveValue("blind75");
+  });
+
+  test("Go picks a problem from the selected list", async () => {
+    localStorage.clear();
+    vi.spyOn(Math, "random").mockReturnValue(0);
+    const updateMock = vi.fn();
+    vi.stubGlobal("chrome", {
+      tabs: {
+        query: vi.fn().mockImplementation((_q, cb) => cb([{ id: 1 }])),
+        update: updateMock,
+        create: vi.fn(),
+      },
+    });
+
+    render(<App />);
+    await userEvent.selectOptions(
+      screen.getByTestId("list_select"),
+      "grind169",
+    );
+    await userEvent.click(screen.getByTestId("search_button"));
+
+    // first Grind 169 problem
+    expect(updateMock).toHaveBeenCalledWith(1, {
+      url: "https://leetcode.com/problems/two-sum/description/",
+    });
+
+    vi.unstubAllGlobals();
+  });
 });
