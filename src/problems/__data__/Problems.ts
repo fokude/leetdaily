@@ -45,6 +45,10 @@ export const arrayProblems: Problem[] = [
     neetcode: "https://neetcode.io/problems/top-k-elements-in-list/question",
   },
   {
+    leetcode: "https://leetcode.com/problems/encode-and-decode-strings/",
+    neetcode: "https://neetcode.io/problems/string-encode-and-decode/question",
+  },
+  {
     leetcode: "https://leetcode.com/problems/product-of-array-except-self/",
     neetcode:
       "https://neetcode.io/problems/products-of-array-discluding-self/question",
