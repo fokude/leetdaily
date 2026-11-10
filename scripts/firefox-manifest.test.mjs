@@ -4,7 +4,7 @@ import { GECKO_ID, toFirefoxManifest } from "./firefox-manifest.mjs";
 
 const chrome = {
   manifest_version: 3,
-  name: "Memoize",
+  name: "Spaced Complexity",
   permissions: ["storage", "alarms"],
   background: { service_worker: "assets/background.js", type: "module" },
 };

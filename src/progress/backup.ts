@@ -48,7 +48,7 @@ const isList = (v: unknown): boolean => {
 export const parseBackup = (text: string): Backup => {
   const data = JSON.parse(text);
   if (data?.version !== 1 || typeof data.progress !== "object") {
-    throw new Error("Not a Memoize backup file");
+    throw new Error("Not a Spaced Complexity backup file");
   }
   for (const [slug, rec] of Object.entries(data.progress)) {
     if (!SLUG.test(slug) || !isRecord(rec)) {

@@ -165,7 +165,7 @@ function App() {
         </div>
         <div className="title-container">
           <h1 data-testid={"title"} className="app-title">
-            Memoize
+            Spaced Complexity
           </h1>
           <div className="list-row">
             <ListSelect

@@ -18,7 +18,9 @@ describe("backup", () => {
   });
 
   test("rejects files that are not backups", () => {
-    expect(() => parseBackup('{"hello":1}')).toThrow("Not a Memoize backup");
+    expect(() => parseBackup('{"hello":1}')).toThrow(
+      "Not a Spaced Complexity backup",
+    );
   });
 
   test("rejects malformed records", () => {
