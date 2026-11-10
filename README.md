@@ -44,6 +44,48 @@ This builds the extension, writes a Firefox version to `./dist-firefox` and open
 
 Every time you make a change to the code, make sure you rebuild locally then click reload extension on the extensions dashboard.
 
+## Lists, importing and backups
+
+Pick the active list from the badge under the title in the popup. The dashboard uses the same list, so changing it in one place changes it in the other. NeetCode 150, Blind 75 and Grind 169 are built in.
+
+### Custom lists
+
+On the dashboard, click `+ New list` and paste LeetCode problem links or slugs. Any of these work, one per line or separated by commas:
+
+```text
+https://leetcode.com/problems/two-sum/
+valid-anagram
+3sum, lru-cache
+["two-sum", "group-anagrams"]
+```
+
+Titles with spaces (`Two Sum`) are skipped because they cannot be turned into a link reliably. A list holds up to 200 problems.
+
+### Backups
+
+`Export` on the dashboard downloads a JSON file and `Import` replaces your progress and custom lists with one. This is also how to move progress between browsers, for example Chrome to Firefox.
+
+```json
+{
+  "version": 1,
+  "progress": {
+    "two-sum": { "solved": true, "box": 2, "last": 20402, "due": 20405 }
+  },
+  "lists": [{ "id": "c1", "name": "My list", "slugs": ["two-sum"] }]
+}
+```
+
+`box` is the review step (0 means not in the revisit queue, 1 to 5 are the 1, 3, 7, 14 and 30 day steps). `last` and `due` are day numbers, counted as days since 1 Jan 1970 in local time.
+
+### Where data lives
+
+| Data | Stored in | Syncs |
+| --- | --- | --- |
+| Progress, custom lists, active list | `chrome.storage.sync` | Across devices signed into the same Chrome or Firefox account |
+| Theme, NeetCode toggle, last opened problem | Local to the browser | No |
+
+Sync does not work between different browsers. Use Export and Import for that.
+
 ## How to Test
 
 Ensure the project functions as expected by following these steps:
