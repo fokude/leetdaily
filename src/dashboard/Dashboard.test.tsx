@@ -157,4 +157,17 @@ describe("Dashboard", () => {
     expect(document.documentElement.dataset.theme).toBe("dark");
     expect(localStorage.getItem("theme")).toBe("dark");
   });
+
+  test("header shows the current streak and the best", async () => {
+    const day = today();
+    localStorage.setItem(
+      "ld:sync:streak",
+      JSON.stringify({ current: 3, best: 7, last: day }),
+    );
+    render(<Dashboard />);
+
+    expect(
+      await screen.findByText(/3 day streak \(best 7\)/),
+    ).toBeInTheDocument();
+  });
 });

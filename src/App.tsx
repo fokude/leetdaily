@@ -5,7 +5,9 @@ import Button from "./components/button/Button";
 import Link from "./components/link/Link";
 import ListSelect from "./components/list/ListSelect";
 import { Category } from "./problems/__data__/Problems";
+import StreakChip from "./components/streak/StreakChip";
 import ThemeToggle from "./components/theme/ThemeToggle";
+import { useStreak } from "./streak/useStreak";
 import { SOURCE_CODE_URL } from "./links";
 import { sendMessageToBackground } from "./chrome/chrome-utils";
 import { NEETCODE_150_ID } from "./lists/builtin";
@@ -33,6 +35,7 @@ function App() {
 
   const { progress, update } = useProgress();
   const { lists } = useLists();
+  const streak = useStreak();
   const { active, setActiveId } = useActiveList(lists);
   const hasCategories = active.id === NEETCODE_150_ID;
 
@@ -57,6 +60,7 @@ function App() {
   const handleRating = (rating: Rating) => {
     if (!lastOpened) return;
     update([lastOpened], (rec) => applyRating(rec, rating, today()));
+    streak.record();
     finishRating();
   };
 
@@ -163,7 +167,14 @@ function App() {
           <h1 data-testid={"title"} className="app-title">
             LeetDaily
           </h1>
-          <ListSelect lists={lists} value={active.id} onChange={setActiveId} />
+          <div className="list-row">
+            <ListSelect
+              lists={lists}
+              value={active.id}
+              onChange={setActiveId}
+            />
+            <StreakChip days={streak.days} doneToday={streak.doneToday} />
+          </div>
           <p className="description">
             Reinforce your skills with active recall.{" "}
             {hasCategories ? "Select a category to begin." : "Hit Go to begin."}

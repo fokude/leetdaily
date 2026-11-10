@@ -329,4 +329,26 @@ describe("App.tsx", () => {
     await userEvent.keyboard("{Escape}");
     expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
   });
+
+  test("rating a problem starts a streak shown next to the list selector", async () => {
+    localStorage.clear();
+    localStorage.setItem("ld:local:lastOpened", JSON.stringify("two-sum"));
+
+    render(<App />);
+    expect(screen.queryByTestId("streak_chip")).not.toBeInTheDocument();
+
+    await userEvent.click(await screen.findByTestId("nailed_button"));
+
+    expect(await screen.findByTestId("streak_chip")).toHaveTextContent("1");
+  });
+
+  test("skipping the rating prompt does not count towards the streak", async () => {
+    localStorage.clear();
+    localStorage.setItem("ld:local:lastOpened", JSON.stringify("two-sum"));
+
+    render(<App />);
+    await userEvent.click(await screen.findByTestId("skip_button"));
+
+    expect(screen.queryByTestId("streak_chip")).not.toBeInTheDocument();
+  });
 });

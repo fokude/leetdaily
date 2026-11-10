@@ -18,6 +18,7 @@ import {
 import { useProgress } from "../progress/useProgress";
 import { storageSet } from "../storage/storage";
 import ThemeToggle from "../components/theme/ThemeToggle";
+import { useStreak } from "../streak/useStreak";
 import "./dashboard.css";
 
 type Filter = "all" | "unsolved" | "solved" | "queued";
@@ -50,6 +51,7 @@ function ProblemLink({ slug }: { slug: string }) {
 
 function Dashboard() {
   const { progress, loaded, update, replaceAll } = useProgress();
+  const streak = useStreak();
   const { lists, custom, addList, removeList, replaceCustom } = useLists();
   const [creating, setCreating] = useState(false);
   const [newName, setNewName] = useState("");
@@ -155,6 +157,8 @@ function Dashboard() {
         <div>
           <h1>LeetDaily</h1>
           <p className="muted">
+            {streak.days > 0 &&
+              `${streak.days} day streak (best ${streak.best}), `}
             {queued.length} in revisit queue, {dueCount} due today
           </p>
         </div>

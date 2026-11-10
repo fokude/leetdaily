@@ -604,3 +604,39 @@ input:checked + .slider:before {
   margin-left: -105px;
   text-align: left;
 }
+
+/* List selector and streak share a row under the title */
+.list-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.streak-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: var(--secondary);
+  color: var(--text-muted);
+}
+
+.streak-chip svg {
+  width: 12px;
+  height: 12px;
+}
+
+.streak-chip.done {
+  color: var(--accent-yellow-text);
+  background: var(--accent-yellow);
+  border-color: var(--accent-yellow-border);
+}
+
+.streak-chip.done svg {
+  fill: currentColor;
+}
