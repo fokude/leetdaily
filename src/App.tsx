@@ -4,14 +4,48 @@ import { ProblemEndpoint } from "./problems/ProblemEndpoint";
 import CategorySelect from "./components/category/CategorySelect";
 import Button from "./components/button/Button";
 import Link from "./components/link/Link";
-import { Category } from "./problems/__data__/Problems";
+import { Category, Problem } from "./problems/__data__/Problems";
 import { sendMessageToBackground } from "./chrome/chrome-utils";
+import {
+  addToQueue,
+  clearLastOpened,
+  getLastOpened,
+  getQueue,
+  pickFromQueue,
+  problemName,
+  removeFromQueue,
+  setLastOpened,
+} from "./revisit/revisitStore";
 
 function App() {
   const [category, setCategory] = useState<Category>(Category.ALL);
   const [useNeetCode, setUseNeetCode] = useState<boolean>(() => {
     return localStorage.getItem("useNeetCode") === "true";
   });
+
+  const [queue, setQueue] = useState<Problem[]>(getQueue);
+  const [lastOpened, setLastOpenedState] = useState<Problem | null>(
+    getLastOpened,
+  );
+
+  const handleGotIt = () => {
+    if (!lastOpened) return;
+    setQueue(removeFromQueue(lastOpened));
+    clearLastOpened();
+    setLastOpenedState(null);
+  };
+
+  const handleRevisit = () => {
+    if (!lastOpened) return;
+    setQueue(addToQueue(lastOpened));
+    clearLastOpened();
+    setLastOpenedState(null);
+  };
+
+  const openProblem = (problem: Problem) => {
+    setLastOpened(problem);
+    openUrl(useNeetCode ? problem.neetcode : problem.leetcode);
+  };
 
   const handleToggle = (checked: boolean) => {
     setUseNeetCode(checked);
@@ -47,9 +81,12 @@ function App() {
   };
 
   const open150 = async () => {
-    const problem = new ProblemEndpoint().getRandomProblem(category);
-    const finalUrl = useNeetCode ? problem.neetcode : problem.leetcode;
-    openUrl(finalUrl);
+    openProblem(new ProblemEndpoint().getRandomProblem(category));
+  };
+
+  const openRevisit = () => {
+    const problem = pickFromQueue(queue);
+    if (problem) openProblem(problem);
   };
 
   const openSourceCode = async () => {
@@ -87,6 +124,26 @@ function App() {
           </p>
         </div>
       </div>
+
+      {lastOpened && (
+        <div className="card recall-card" data-testid="recall_card">
+          <p className="recall-title">
+            How did <strong>{problemName(lastOpened)}</strong> go?
+          </p>
+          <div className="recall-actions">
+            <Button id="got_it_button" onClick={handleGotIt} variant="primary">
+              <span>Got it</span>
+            </Button>
+            <Button
+              id="revisit_button"
+              onClick={handleRevisit}
+              variant="secondary"
+            >
+              <span>Revisit later</span>
+            </Button>
+          </div>
+        </div>
+      )}
 
       <div className="card">
         <CategorySelect onChange={setCategory} />
@@ -134,6 +191,18 @@ function App() {
             <line x1="5" y1="12" x2="19" y2="12" />
             <polyline points="12 5 19 12 12 19" />
           </svg>
+        </Button>
+
+        <Button
+          id="revisit_queue_button"
+          onClick={openRevisit}
+          variant="secondary"
+        >
+          <span>
+            {queue.length > 0
+              ? `Revisit a missed one (${queue.length})`
+              : "Nothing to revisit yet"}
+          </span>
         </Button>
 
         <Button

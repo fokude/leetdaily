@@ -463,3 +463,21 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+/* Active recall */
+.recall-card {
+  gap: 12px;
+  border-color: var(--accent-yellow-border);
+  background: var(--accent-yellow);
+}
+
+.recall-title {
+  font-size: 0.9rem;
+  color: var(--accent-yellow-text);
+  text-align: center;
+}
+
+.recall-actions {
+  display: flex;
+  gap: 8px;
+}

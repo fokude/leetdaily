@@ -178,4 +178,28 @@ describe("App.tsx", () => {
 
     vi.unstubAllGlobals();
   });
+
+  test("marking last problem as revisit adds it to the revisit queue", async () => {
+    localStorage.clear();
+    vi.stubGlobal("chrome", {
+      tabs: {
+        query: vi.fn().mockImplementation((_q, cb) => cb([{ id: 1 }])),
+        update: vi.fn(),
+        create: vi.fn(),
+      },
+    });
+
+    const { unmount } = render(<App />);
+    await userEvent.click(screen.getByTestId("search_button"));
+    unmount();
+
+    render(<App />);
+    expect(screen.getByTestId("recall_card")).toBeInTheDocument();
+    await userEvent.click(screen.getByTestId("revisit_button"));
+
+    expect(screen.queryByTestId("recall_card")).not.toBeInTheDocument();
+    expect(screen.getByTestId("revisit_queue_button")).toHaveTextContent("(1)");
+
+    vi.unstubAllGlobals();
+  });
 });
