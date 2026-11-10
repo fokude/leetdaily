@@ -4,10 +4,17 @@
   "name": "Memoize - DSA Interview Companion",
   "description": "Practice DSA interview problems from NeetCode 150, Blind 75 and Grind 169, then review the ones you missed with spaced repetition.",
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
   },
   "icons": {
-    "512": "icon.png"
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   },
   "background": {
     "service_worker": "assets/background.js",
